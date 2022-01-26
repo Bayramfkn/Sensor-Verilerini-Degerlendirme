@@ -1,0 +1,1 @@
+# Sensor-Verilerini-Degerlendirme
