@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+
+namespace Tablo_Grafik_Boyama
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            dataGridView1.RowCount = 18; // datagridview satır sayısı
+            Random numberGenerator = new Random(); // random sayı oluşturma
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                dataGridView1.Rows[i].Cells[0].Value = i;
+                for (int u = 0; u < dataGridView1.Rows.Count; u++)
+                {
+                    dataGridView1.Rows[u].Cells[1].Value = numberGenerator.Next(0, 100);
+                }
+            }
+            int max = 0; // maksimum sayi başlangıc degeri
+            int maxid = 0; // maksimum sayı idsi başlangıc degeri
+            for (int i = 0; i <= dataGridView1.Rows.Count - 1; i++)// max sayı ve  max sayi idsini bulmak için kullanılan fonksiyon
+            {
+                if (max < int.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString()))
+                {
+                    max = int.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString());
+                    maxid = int.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString());
+                }
+                label1.Text = max.ToString();
+                label2.Text = maxid.ToString();
+            }
+            // Grafik yapma kısımı
+            this.chart1.Titles.Clear();
+            chart1.Titles.Add("Number");
+            this.chart1.Series.Clear();
+            for (int i = 0; i < int.Parse(label2.Text); i++)
+            {
+                if (int.Parse(label1.Text) - int.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString()) < 5)
+                {
+                    Series series = this.chart1.Series.Add(dataGridView1.Rows[i].Cells[0].Value.ToString());
+                    series.Points.Add(int.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString()));
+                    chart1.Series[dataGridView1.Rows[i].Cells[0].Value.ToString()].Color = Color.Red;
+                }
+                else
+                {
+                    Series series = this.chart1.Series.Add(dataGridView1.Rows[i].Cells[0].Value.ToString());
+                    series.Points.Add(int.Parse(dataGridView1.Rows[i].Cells[1].Value.ToString()));
+                    chart1.Series[dataGridView1.Rows[i].Cells[0].Value.ToString()].Color = Color.Blue;
+                }
+            }
+        }
+    }
+}
